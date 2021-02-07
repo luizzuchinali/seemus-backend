@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Seemus.Api.Authentication;
 using Seemus.Domain.Interfaces;
 using Seemus.Domain.Interfaces.Data;
@@ -19,6 +21,25 @@ namespace Seemus.Api.Configurations
 		{
 			if (services == null) throw new ArgumentNullException(nameof(services));
 
+			services.AddCors(options =>
+			{
+				options.AddPolicy("DevlopmentCors", p =>
+				{
+					p.AllowAnyOrigin()
+					.AllowAnyHeader()
+					.AllowAnyMethod()
+					.WithExposedHeaders("X-Total-Count", "Link");
+				});
+
+				options.AddPolicy("ProductionCors", p =>
+				{
+					p.AllowAnyOrigin()
+					.AllowAnyHeader()
+					.AllowAnyMethod()
+					.WithExposedHeaders("X-Total-Count", "Link");
+				});
+			});
+
 			services.AddHttpContextAccessor();
 
 			//Repositorios
@@ -32,6 +53,20 @@ namespace Seemus.Api.Configurations
 			{
 				options.Level = CompressionLevel.Optimal;
 			});
+		}
+
+		public static void UseCors(this IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (app == null) throw new ArgumentNullException(nameof(app));
+
+			if (env.IsDevelopment())
+			{
+				app.UseCors("DevelopmentCors");
+			}
+			else
+			{
+				app.UseCors("ProductionCors");
+			}
 		}
 	}
 }

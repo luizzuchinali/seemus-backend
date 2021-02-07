@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Seemus.Domain.Entities;
 using Seemus.Domain.Interfaces.Data;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Seemus.Infra
 {
-	public class ApplicationDbContext : DbContext, IUnitOfWork
+	public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>, IUnitOfWork
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 		{

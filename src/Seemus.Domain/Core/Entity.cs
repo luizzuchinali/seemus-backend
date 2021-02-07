@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Seemus.Domain.Interfaces;
+using System;
 
 namespace Seemus.Domain.Core
 {
-	public abstract class Entity
+	public abstract class Entity : IEntity
 	{
 		public Guid Id { get; protected set; }
 		public DateTime CreatedAt { get; protected set; }
