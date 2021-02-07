@@ -20,7 +20,7 @@ namespace Seemus.Api.Configurations
                 {
                     Version = "v1",
                     Title = "Projeto Seemus",
-                    Description = "Documentação da api Seemus",
+                    Description = "Documentação api Seemus",
                 });
 
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
