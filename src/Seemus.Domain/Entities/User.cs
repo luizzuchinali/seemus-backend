@@ -12,6 +12,9 @@ namespace Seemus.Domain.Entities
 	{
 		public string Name { get; private set; }
 
+		public string RefreshToken { get; private set; }
+		public DateTime RefreshTokenExpiration { get; private set; }
+
 		public DateTime CreatedAt { get; private set; }
 
 		public DateTime UpdatedAt { get; private set; }
@@ -49,6 +52,15 @@ namespace Seemus.Domain.Entities
 			Validations.IsNullOrEmpty(Name, nameof(Name));
 			Validations.IsNullOrEmpty(Email, nameof(Email));
 			Validations.IsFalse(new EmailAddressAttribute().IsValid(Email), $"The property {nameof(Email)} is not valid e-mail");
+		}
+
+		public void AddRefreshToken(string refreshToken, DateTime expiration)
+		{
+			Validations.IsNullOrEmpty(refreshToken, nameof(refreshToken));
+			Validations.IsTrue(expiration < DateTime.Now, "A data de expiração deve ser uma data futura");
+
+			RefreshToken = refreshToken;
+			RefreshTokenExpiration = expiration;
 		}
 	}
 }

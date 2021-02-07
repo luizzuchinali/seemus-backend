@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Seemus.Api.Configurations;
 using Seemus.Infra;
+using System.Globalization;
 using System.Net.Mime;
 
 namespace Seemus.Api
