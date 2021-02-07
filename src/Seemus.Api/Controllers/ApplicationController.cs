@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Seemus.Api.Controllers
 {
@@ -47,10 +50,10 @@ namespace Seemus.Api.Controllers
 			HttpContext.Response.Headers.Add("X-Total-Pages", count.ToString());
 		}
 
-		//protected Guid GetCurrentUserId()
-		//{
-		//	return Guid.Parse(HttpContext.User.FindFirstValue(JwtRegisteredClaimNames.Sid));
-		//}
+		protected Guid GetCurrentUserId()
+		{
+			return Guid.Parse(HttpContext.User.FindFirstValue(JwtRegisteredClaimNames.Sid));
+		}
 
 		protected void AddMessage(string key, string message)
 		{

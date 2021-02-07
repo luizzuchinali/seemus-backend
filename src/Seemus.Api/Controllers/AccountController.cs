@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -57,5 +58,18 @@ namespace Seemus.Api.Controllers
 
 			return BadRequest("Usuário ou senha inválidos");
 		}
+
+		[HttpGet, Authorize]
+		[ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> GetCurrentUser()
+		{
+			var user = await _userManager.FindByIdAsync(GetCurrentUserId().ToString());
+			if (user is null)
+				return NotFound();
+
+			return Ok(Mapper.Map<UserDto>(user));
+		}
+
 	}
 }
