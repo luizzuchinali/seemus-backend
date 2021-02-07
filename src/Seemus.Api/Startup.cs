@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Seemus.Api.Configurations;
+using Seemus.Infra;
+using System.Net.Mime;
 
 namespace Seemus.Api
 {
@@ -40,11 +44,22 @@ namespace Seemus.Api
 			//Abstrações
 			services.AddDependencyInjectionConfiguration();
 
-			services.AddControllers();
+			services.AddControllers().ConfigureApiBehaviorOptions(options =>
+			{
+				options.InvalidModelStateResponseFactory = context =>
+				{
+					var result = new BadRequestObjectResult(new AppProblemDetails(context.ModelState));
+					result.ContentTypes.Add(MediaTypeNames.Application.Json);
+					return result;
+				};
+			});
+
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
+			UpdateDatabase(app);
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -66,6 +81,19 @@ namespace Seemus.Api
 			{
 				endpoints.MapControllers();
 			});
+		}
+
+		private static void UpdateDatabase(IApplicationBuilder app)
+		{
+			using (var serviceScope = app.ApplicationServices
+				.GetRequiredService<IServiceScopeFactory>()
+				.CreateScope())
+			{
+				using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
+				{
+					context.Database.Migrate();
+				}
+			}
 		}
 	}
 }

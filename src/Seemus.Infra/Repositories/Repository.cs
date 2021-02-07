@@ -1,7 +1,7 @@
 ﻿using Luizanac.Utils.Extensions;
 using Luizanac.Utils.Extensions.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Seemus.Domain.Core;
+using Seemus.Domain.Interfaces;
 using Seemus.Domain.Interfaces.Data;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Seemus.Infra.Repositories
 {
-	public class Repository<T> : IRepository<T> where T : Entity
+	public class Repository<T> : IRepository<T> where T : class, IEntity
 	{
 		protected readonly ApplicationDbContext DbContext;
 		protected readonly DbSet<T> DbSet;

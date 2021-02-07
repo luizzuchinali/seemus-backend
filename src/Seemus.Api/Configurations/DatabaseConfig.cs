@@ -2,12 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Seemus.Api.Validations;
 using Seemus.Domain.Entities;
 using Seemus.Infra;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Seemus.Api.Configurations
 {
@@ -29,13 +27,14 @@ namespace Seemus.Api.Configurations
 			{
 				options.Password.RequireDigit = false;
 				options.Password.RequiredLength = 8;
-				options.Password.RequireLowercase = true;
-				options.Password.RequireUppercase = true;
-				options.Password.RequireNonAlphanumeric = true;
+				options.Password.RequireLowercase = false;
+				options.Password.RequireUppercase = false;
+				options.Password.RequireNonAlphanumeric = false;
 				options.SignIn.RequireConfirmedEmail = true;
 				options.SignIn.RequireConfirmedPhoneNumber = false;
 				options.User.RequireUniqueEmail = true;
 			})
+				.AddErrorDescriber<PortugueseIdentityErrorDescriber>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 		}

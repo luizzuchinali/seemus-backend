@@ -11,13 +11,21 @@ namespace Seemus.Domain.Entities
 
 		public DateTime UpdatedAt { get; private set; }
 
-		public IList<User> Users { get; private set; }
+		public virtual IList<UserRole> UserRoles { get; private set; }
+		public virtual IList<RoleClaim> Claims { get; private set; }
 
 		protected Role()
 		{
 			Id = Guid.NewGuid();
 			CreatedAt = DateTime.UtcNow;
 			UpdatedAt = DateTime.UtcNow;
+		}
+
+		public Role(Guid id, string name, DateTime createdAt, DateTime updatedAt) : base(name)
+		{
+			Id = id;
+			CreatedAt = createdAt;
+			UpdatedAt = updatedAt;
 		}
 
 		public void Validate()

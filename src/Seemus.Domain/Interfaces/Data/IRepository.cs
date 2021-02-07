@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Seemus.Domain.Interfaces.Data
 {
-	public interface IRepository<T> : IDisposable where T : Entity
+	public interface IRepository<T> : IDisposable where T : IEntity
 	{
 		Task<T> Get(Expression<Func<T, bool>> func);
 		Task<T> GetById(Guid id);

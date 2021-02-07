@@ -17,13 +17,10 @@ namespace Seemus.Api.Configurations
 			if (services == null) throw new ArgumentNullException(nameof(services));
 
 			//Configure Authentication
-			services.AddAuthentication(options =>
+			services
+				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer(config =>
 			{
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			}).AddJwtBearer(config =>
-			{
-				config.RequireHttpsMetadata = false;
 				config.SaveToken = true;
 
 				config.TokenValidationParameters = new TokenValidationParameters()

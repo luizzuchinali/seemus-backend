@@ -11,7 +11,7 @@ namespace Seemus.Api.Configurations
 		{
 			if (services == null) throw new ArgumentNullException(nameof(services));
 
-			services.AddAutoMapper(typeof(DomainToDtoProfile), typeof(DtoToDomainProfile));
+			services.AddAutoMapper(typeof(UserProfile));
 		}
 	}
 }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Collections.Generic;
 
 namespace Seemus.Api.Controllers
 {
@@ -20,14 +22,20 @@ namespace Seemus.Api.Controllers
 		[NonAction]
 		public override BadRequestObjectResult BadRequest([ActionResultObjectValue] ModelStateDictionary modelState)
 		{
-			return base.BadRequest(new ProblemDetails(modelState));
+			return base.BadRequest(new AppProblemDetails(modelState));
+		}
+
+		[NonAction]
+		public BadRequestObjectResult BadRequest([ActionResultObjectValue] IEnumerable<IdentityError> errors)
+		{
+			return base.BadRequest(new AppProblemDetails(errors));
 		}
 
 		[NonAction]
 		public override BadRequestObjectResult BadRequest([ActionResultObjectValue] object error)
 		{
 			if (error is string)
-				return new BadRequestObjectResult(new ProblemDetails((string)error));
+				return new BadRequestObjectResult(new AppProblemDetails((string)error));
 
 			return base.BadRequest(error);
 		}
