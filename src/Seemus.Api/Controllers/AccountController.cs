@@ -10,6 +10,7 @@ using Seemus.Api.Dtos.Account;
 using Seemus.Api.Dtos.User;
 using Seemus.Domain.Entities;
 using Seemus.Domain.Interfaces;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading.Tasks;
 
@@ -31,10 +32,11 @@ namespace Seemus.Api.Controllers
 			_tokenFactory = tokenFactory;
 		}
 
-		[HttpPost, AllowAnonymous]
+		[HttpPost("auth"), AllowAnonymous]
+		[SwaggerOperation("Endpoint para autenticar um usuário")]
 		[ProducesResponseType(typeof(AuthResultDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(AppProblemDetails), StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> Login(AuthDto dto)
+		public async Task<IActionResult> Auth(AuthDto dto)
 		{
 			var user = await _userManager.FindByEmailAsync(dto.Email);
 			if (user == null)
@@ -60,6 +62,7 @@ namespace Seemus.Api.Controllers
 		}
 
 		[HttpGet, Authorize]
+		[SwaggerOperation("Endpoint para obter os dados do token enviado")]
 		[ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> GetCurrentUser()
