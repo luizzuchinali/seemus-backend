@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Seemus.Api.Dtos.User
+namespace Seemus.Domain.Dtos.User
 {
 	public class UserDto
 	{

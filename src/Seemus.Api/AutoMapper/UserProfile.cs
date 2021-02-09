@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Seemus.Api.Dtos.User;
+using Seemus.Domain.Dtos.User;
 using Seemus.Domain.Entities;
 using System.Linq;
 

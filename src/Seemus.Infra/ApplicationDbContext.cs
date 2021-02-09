@@ -9,30 +9,31 @@ using System.Threading.Tasks;
 
 namespace Seemus.Infra
 {
-	public class ApplicationDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>, IUnitOfWork
-	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-		{
-		}
+    public class ApplicationDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>, IUnitOfWork
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			base.OnModelCreating(modelBuilder);
+        public DbSet<Artist> Artists { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-			foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
-				e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
-				property.SetColumnType("varchar(100)");
+            foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
+                e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
+                property.SetColumnType("varchar(100)");
 
-			modelBuilder
-				.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            modelBuilder
+                .ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
-			//Seed database
-			modelBuilder.Entity<Role>().Seed();
-		}
+            //Seed database
+            modelBuilder.Entity<Role>().Seed();
+        }
 
-		public async Task<bool> Commit()
-		{
-			return await base.SaveChangesAsync() > 0;
-		}
-	}
+        public async Task<bool> Commit()
+        {
+            return await base.SaveChangesAsync() > 0;
+        }
+    }
 }

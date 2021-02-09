@@ -1,10 +1,11 @@
-﻿using Seemus.Api.Dtos.User;
+﻿
+using Seemus.Domain.Dtos.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Seemus.Api.Dtos.Account
+namespace Seemus.Domain.Dtos.Account
 {
 	public class AuthResultDto
 	{

@@ -44,6 +44,7 @@ namespace Seemus.Api.Configurations
 
 			//Repositorios
 			services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+			services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 
 			//Auth
 			services.AddSingleton<ITokenFactory, TokenFactory>();
