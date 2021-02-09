@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Seemus.Api.Hubs;
 using Seemus.Domain.Constants;
 using Seemus.Domain.Dtos.User;
 using Seemus.Domain.Entities;
@@ -18,6 +20,8 @@ namespace Seemus.Api.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IRepository<Role> _roleRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IHubContext<ArtistHub> _artistHub;
+
         public ArtistController(IMapper mapper, UserManager<User> userManager, IRepository<Role> roleRepository, IUserRepository userRepository) : base(mapper)
         {
             _userManager = userManager;
@@ -55,10 +59,9 @@ namespace Seemus.Api.Controllers
                 return NotFound();
 
             artist.ChangeOnlineStatus(true);
-
-            //TODO: Implementar propagação para o hub de online/offline listagem
-
             await _userRepository.UnitOfWork.Commit();
+
+            await _artistHub.Clients.All.SendAsync(WebSocketTopics.ArtistOnline, Mapper.Map<ArtistDto>(artist));
             return Ok();
         }
 
@@ -74,10 +77,9 @@ namespace Seemus.Api.Controllers
                 return NotFound();
 
             artist.ChangeOnlineStatus(false);
-
-            //TODO: Implementar propagação para o hub de online/offline listagem
-
             await _userRepository.UnitOfWork.Commit();
+
+            await _artistHub.Clients.All.SendAsync(WebSocketTopics.ArtistOffline, Mapper.Map<ArtistDto>(artist));
             return Ok();
         }
     }

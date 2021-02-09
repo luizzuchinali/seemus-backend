@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Seemus.Api.Configurations;
+using Seemus.Api.Hubs;
 using Seemus.Api.Validations;
 using Seemus.Infra;
 using System.Globalization;
@@ -47,6 +48,8 @@ namespace Seemus.Api
 
             //Abstra��es
             services.AddDependencyInjectionConfiguration();
+
+            services.AddSignalR();
 
             services.AddControllers().ConfigureApiBehaviorOptions(options =>
             {
@@ -92,6 +95,7 @@ namespace Seemus.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ArtistHub>("hubs/artists");
             });
         }
 

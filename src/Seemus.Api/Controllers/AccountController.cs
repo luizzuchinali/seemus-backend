@@ -22,7 +22,7 @@ namespace Seemus.Api.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ITokenFactory _tokenFactory;
-
+                
         public AccountController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, ITokenFactory tokenFactory) : base(mapper)
         {
             _userManager = userManager;
