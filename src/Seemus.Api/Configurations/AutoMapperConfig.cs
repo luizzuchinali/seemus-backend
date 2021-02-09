@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
-using Seemus.Api.AutoMapper;
+using Seemus.Domain.AutoMapper;
 using System;
 
 namespace Seemus.Api.Configurations

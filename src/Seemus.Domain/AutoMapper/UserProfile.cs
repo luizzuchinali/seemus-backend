@@ -3,7 +3,7 @@ using Seemus.Domain.Dtos.User;
 using Seemus.Domain.Entities;
 using System.Linq;
 
-namespace Seemus.Api.AutoMapper
+namespace Seemus.Domain.AutoMapper
 {
     public class UserProfile : Profile
     {
@@ -15,6 +15,10 @@ namespace Seemus.Api.AutoMapper
             CreateMap<User, ArtistDto>()
                 .ForMember(x => x.Online, opt => opt.MapFrom(x => x.Artist.Online))
                 .ForMember(x => x.ProfileImageUrl, opt => opt.MapFrom(x => x.Artist.ProfileImageUrl));
+
+            CreateMap<Artist, ArtistDto>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(x => x.UserId))
+                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.User.Name));
         }
     }
 }

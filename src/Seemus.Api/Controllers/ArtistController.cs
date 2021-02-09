@@ -10,6 +10,7 @@ using Seemus.Domain.Dtos.User;
 using Seemus.Domain.Entities;
 using Seemus.Domain.Interfaces.Data;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Seemus.Api.Controllers
@@ -22,11 +23,12 @@ namespace Seemus.Api.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IHubContext<ArtistHub> _artistHub;
 
-        public ArtistController(IMapper mapper, UserManager<User> userManager, IRepository<Role> roleRepository, IUserRepository userRepository) : base(mapper)
+        public ArtistController(IMapper mapper, UserManager<User> userManager, IRepository<Role> roleRepository, IUserRepository userRepository, IHubContext<ArtistHub> artistHub) : base(mapper)
         {
             _userManager = userManager;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
+            _artistHub = artistHub;
         }
 
         [HttpPost, AllowAnonymous]
@@ -47,6 +49,11 @@ namespace Seemus.Api.Controllers
 
             return Ok(Mapper.Map<UserDto>(artist));
         }
+
+        [HttpGet, AllowAnonymous]
+        [SwaggerOperation("Endpoint para listar artitas ativos")]
+        [ProducesResponseType(typeof(IEnumerable<ArtistDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll(string search = null, bool online = true) => Ok(await _userRepository.GetAllArtists(search, online));
 
         [HttpPatch("online"), Authorize(Roles = Roles.Artist)]
         [SwaggerOperation("Endpoint para um artista modificar o status para online")]

@@ -8,5 +8,18 @@ namespace Seemus.Domain.Dtos.User
         public string Name { get; set; }
         public string ProfileImageUrl { get; set; }
         public bool Online { get; set; }
+
+        public ArtistDto()
+        {
+            
+        }
+
+        public ArtistDto(Guid id, string name, string profileImageUrl, bool online)
+        {
+            Id = id;
+            Name = name;
+            ProfileImageUrl = profileImageUrl;
+            Online = online;
+        }
     }
 }
